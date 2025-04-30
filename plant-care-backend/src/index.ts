@@ -24,7 +24,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:;"
   );
   next();
 });
@@ -47,7 +47,10 @@ app.get('/api-docs/swagger.json', (req, res) => {
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongo:27017/plant-care')
   .then(() => console.log('Connected to MongoDB'))
-  .catch((error) => console.error('MongoDB connection error:', error));
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
+    process.exit(1); // Uygulamayı durdur
+  });
 
 // Routes
 app.use('/api/plants', plantRoutes);
@@ -60,6 +63,15 @@ app.get('/', (req, res) => {
 // Health check route
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
+});
+
+// Error handling middleware
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: 'Internal Server Error',
+    error: process.env.NODE_ENV === 'development' ? err.message : {}
+  });
 });
 
 // Start server
