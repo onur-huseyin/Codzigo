@@ -3,5 +3,16 @@
   "buildCommand": "cd plant-care-backend && npm install && npm run build",
   "installCommand": "cd plant-care-backend && npm install",
   "outputDirectory": "plant-care-backend/dist",
-  "framework": "nodejs"
+  "builds": [
+    {
+      "src": "plant-care-backend/package.json",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
 } 
