@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "buildCommand": "cd plant-care-backend && npm run build",
+  "installCommand": "cd plant-care-backend && npm install",
+  "outputDirectory": "plant-care-backend/dist"
+} 
