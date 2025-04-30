@@ -11,8 +11,16 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/"
+      "src": "/api/(.*)",
+      "dest": "plant-care-backend/dist/index.js"
+    },
+    {
+      "src": "/api-docs",
+      "dest": "plant-care-backend/dist/index.js"
+    },
+    {
+      "src": "/api-docs/(.*)",
+      "dest": "plant-care-backend/dist/index.js"
     }
   ]
 } 
