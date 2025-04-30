@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: plant-mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: plant-care
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./plant-care-backend
+    container_name: plant-backend
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/plant-care
+      - PORT=5000
+    depends_on:
+      - mongo
+    volumes:
+      - ./plant-care-backend:/app
+      - /app/node_modules
+
+volumes:
+  mongo-data: 
