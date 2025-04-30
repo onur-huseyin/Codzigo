@@ -32,13 +32,16 @@ app.use((req, res, next) => {
 });
 
 // Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerSpec, {
   explorer: true,
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: "Plant Care API Documentation",
   swaggerOptions: {
-    persistAuthorization: true,
-    displayRequestDuration: true
+    urls: [
+      {
+        url: '/api-docs/swagger.json',
+        name: 'Plant Care API'
+      }
+    ]
   }
 }));
 
