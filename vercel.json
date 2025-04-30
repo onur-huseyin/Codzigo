@@ -1,18 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "cd plant-care-backend && npm install && npm run build",
-  "installCommand": "cd plant-care-backend && npm install",
-  "outputDirectory": "plant-care-backend/dist",
   "builds": [
     {
-      "src": "plant-care-backend/package.json",
+      "src": "plant-care-backend/src/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "plant-care-backend/dist/index.js"
+      "dest": "plant-care-backend/src/index.ts"
     }
   ]
 } 
