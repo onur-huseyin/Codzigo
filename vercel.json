@@ -2,13 +2,17 @@
   "version": 2,
   "builds": [
     {
-      "src": "plant-care-backend/src/index.ts",
+      "src": "plant-care-backend/package.json",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api-docs/(.*)",
+      "dest": "plant-care-backend/src/index.ts"
+    },
+    {
+      "src": "/api/(.*)",
       "dest": "plant-care-backend/src/index.ts"
     }
   ]
