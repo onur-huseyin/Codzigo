@@ -53,7 +53,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongo:27017/plant-care')
 app.use('/api/plants', plantRoutes);
 
 // Basic route
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Plant Care API' });
 });
 
