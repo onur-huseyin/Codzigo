@@ -13,11 +13,7 @@ const app = express();
 const port = process.env.PORT; // Vercel otomatik port atayacak
 
 // Middleware
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 app.use(express.json());
 
 // Add CSP headers
@@ -36,11 +32,16 @@ app.use((req, res, next) => {
 });
 
 // Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerSpec, {
   explorer: true,
-  customSiteTitle: "Plant Care API Documentation",
   swaggerOptions: {
-    url: "/api-docs/swagger.json"
+    urls: [
+      {
+        url: '/api-docs/swagger.json',
+        name: 'Plant Care API'
+      }
+    ]
   }
 }));
 
@@ -51,24 +52,9 @@ app.get('/api-docs/swagger.json', (req, res) => {
 });
 
 // MongoDB connection
-const connectDB = async () => {
-  try {
-    const mongoURI = process.env.MONGODB_URI;
-    if (!mongoURI) {
-      throw new Error('MONGODB_URI is not defined in environment variables');
-    }
-    
-    console.log('Attempting to connect to MongoDB...');
-    await mongoose.connect(mongoURI);
-    console.log('Connected to MongoDB successfully');
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    process.exit(1);
-  }
-};
-
-// Connect to MongoDB before starting the server
-connectDB();
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://mongo:27017/plant-care')
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('MongoDB connection error:', error));
 
 // Routes
 app.use('/api/plants', plantRoutes);
